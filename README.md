@@ -1,2 +1,9 @@
 # SWE-363-project
->>>>>>> 653aed79ed1fb32ff383097b1d2ab5e54f86fb83
+## Team members:
+|Name | ID |
+| :---: | :---:|
+| ABDULAZIZ Alarifi | 202158910 |
+| SAIFULLAH BUKHARI | 202177630 |
+| Abdulrahman Alabdulkarim | 202164170 |
+| Faisal Alshalan | 202153490 |
+| Ismael Arqsosi | 202182150 |
