@@ -1,39 +1,37 @@
-import React, { useState } from "react";
-import KConnect from "../assets/logo.png";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import KConnect from "../assets/kfupmConnectLogo.png";
 import avatar from "../assets/avatar.png";
 
 const Header = () => {
-  const tabs = ["Home", "Events", "Profile"];
-  const [activeTab, setActiveTab] = useState("Home");
+  const tabs = [
+    { name: "Home", path: "/" },
+    { name: "Events", path: "/events" },
+    { name: "Profile", path: "/profile" }
+  ];
+  const location = useLocation();
 
   return (
     <header className="fixed inset-x-0 top-0 h-[100px] z-50">
       <div className="mx-auto max-w-7xl h-full grid grid-cols-3 items-center px-4">
-        {/* Left: Logo */}
+
         <div className="flex items-center h-full justify-self-start">
           <img
             src={KConnect}
             alt="KFUPM Connect Logo"
             className="h-[48px] w-auto"
           />
-          <span className="ml-2 font-semibold text-lg text-gray-900">
-            KFUPM Connect
-          </span>
         </div>
 
-        {/* Center: Nav pills */}
         <nav className="justify-self-center">
           <ul className="flex h-[46px] items-center bg-white bg-opacity-90 rounded-full px-2">
             {tabs.map((tab) => {
-              const isActive = tab === activeTab;
+              const isActive = location.pathname === tab.path || 
+                (location.pathname === "" && tab.path === "/");
               return (
-                <li key={tab} className="mx-1">
-                  <a
-                    href={`#${tab.toLowerCase()}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActiveTab(tab);
-                    }}
+                <li key={tab.name} className="mx-1">
+                  <Link
+                    to={tab.path}
                     className={`
                       flex items-center justify-center
                       h-full px-5 text-sm font-medium rounded-full transition
@@ -44,23 +42,22 @@ const Header = () => {
                       }
                     `}
                   >
-                    {tab}
-                  </a>
+                    {tab.name}
+                  </Link>
                 </li>
               );
             })}
           </ul>
         </nav>
 
-        {/* Right: User */}
-        <div className="flex items-center h-full justify-self-end pr-4">
+        <Link to="/manage" className="flex items-center h-full justify-self-end pr-4">
           <img
             src={avatar}
             alt="User Avatar"
             className="h-[54px] w-[54px] rounded-full border-2 border-white"
           />
           <span className="ml-2 font-medium text-gray-900">Welcome Ahmed</span>
-        </div>
+        </Link>
       </div>
     </header>
   );
