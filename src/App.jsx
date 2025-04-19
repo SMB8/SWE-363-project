@@ -1,8 +1,11 @@
-import { useState } from "react";
 
-import HomePage from "./home/home-page";
-import Header from "./home/header";
-import EventsPage from "./events/eventsPage";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import Header from './codeParts/Header';
+import CreatingEvent from './codeParts/CreatingEvent';
+import CheckEvent from './codeParts/CheckEvent';
+
 
 function App() {
   const [count, setCount] = useState(0);
