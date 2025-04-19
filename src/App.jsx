@@ -1,18 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import Header from './codeParts/Header';
+import { useState } from "react";
+
+import HomePage from "./home/home-page";
+import Header from "./home/header";
+import EventsPage from "./events/eventsPage";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
+      <Header />
       <div>
-        <Header/>
+        <EventsPage></EventsPage>
       </div>
     </>
-  )
+  );
 }
- 
-export default App
+
+export default App;
