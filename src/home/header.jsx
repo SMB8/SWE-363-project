@@ -50,14 +50,14 @@ const Header = () => {
           </ul>
         </nav>
 
-        <div className="flex items-center h-full justify-self-end pr-4">
+        <Link to="/manage" className="flex items-center h-full justify-self-end pr-4">
           <img
             src={avatar}
             alt="User Avatar"
             className="h-[54px] w-[54px] rounded-full border-2 border-white"
           />
           <span className="ml-2 font-medium text-gray-900">Welcome Ahmed</span>
-        </div>
+        </Link>
       </div>
     </header>
   );

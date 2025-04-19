@@ -4,7 +4,7 @@ const Signin = () => {
     return (
         <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-[#a0e9ff] to-[#aff1ff]">
             <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-md">
-                <img src="..\assets\logo.png" alt="KFUPM Connect Logo" className="mx-auto w-32 mb-4" />
+                {/* <img src="../assets/logo.png" alt="KFUPM Connect Logo" className="mx-auto w-32 mb-4" /> */}
                 <h2 className="text-2xl font-bold text-center mb-4">Sign up</h2>
 
                 <form className="space-y-4">
