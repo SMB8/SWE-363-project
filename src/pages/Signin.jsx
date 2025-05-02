@@ -1,22 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 const Signin = () => {
+    const [formData, setFormData] = useState({ email: "", password: "" });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await axios.post("http://localhost:5000/api/auth/signin", formData);
+            alert(res.data.message);
+            // Save token or redirect if needed
+            // localStorage.setItem("token", res.data.token);
+        } catch (err) {
+            alert(err.response?.data?.message || "Sign in failed");
+        }
+    };
+
     return (
         <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-[#a0e9ff] to-[#aff1ff]">
             <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-md">
-                {/* <img src="../assets/logo.png" alt="KFUPM Connect Logo" className="mx-auto w-32 mb-4" /> */}
-                <h2 className="text-2xl font-bold text-center mb-4">Sign up</h2>
+                <h2 className="text-2xl font-bold text-center mb-4">Sign in</h2>
 
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <input type="email" placeholder="John Doe" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300 outline-none" />
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="your.name@kfupm.edu.sa"
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300 outline-none"
+                            required
+                        />
                     </div>
 
-
-                    <div className="w-1/2">
+                    <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <input type="password" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300 outline-none" />
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300 outline-none"
+                            required
+                        />
                     </div>
 
                     <div className="flex items-center gap-2">
