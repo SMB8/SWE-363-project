@@ -5,7 +5,11 @@ import totalIcon from "../assets/users.png";
 import techImg from "../assets/tech.png";
 import designImg from "../assets/design.png";
 import aiImg from "../assets/ai.png";
-
+import {
+  fetchEvents,
+  fetchEnrolledEvents,
+  toggleEventEnrollment,
+} from "../api";
 const recommendedEvents = [
   {
     id: 1,
@@ -53,6 +57,33 @@ export default function EventsPage() {
     total: recommendedEvents.length + enrolledEvents.length,
   };
   const events = view === "recommended" ? recommendedEvents : enrolledEvents;
+  useEffect(() => {
+    (async () => {
+      try {
+        if (view === "recommended") {
+          setEvents(await fetchEvents());
+        } else {
+          setEvents(await fetchEnrolledEvents());
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [view]);
+
+  const handleToggle = async (id) => {
+    try {
+      await toggleEventEnrollment(id);
+      // Refresh the list after toggling
+      if (view === "recommended") {
+        setEvents(await fetchEvents());
+      } else {
+        setEvents(await fetchEnrolledEvents());
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="pt-[150px] px-4 sm:px-12 lg:px-24 pb-12 space-y-8 bg-gray-50 min-h-screen">
