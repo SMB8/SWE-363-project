@@ -96,7 +96,7 @@ const Profile = () => {
           boxShadow: "0 1px 4px #0001",
         }}
       >
-        {/* Removed the commented-out section for old interests display */}
+      
         <button
           style={{
             // ...existing styles...

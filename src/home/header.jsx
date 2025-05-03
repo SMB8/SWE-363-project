@@ -12,6 +12,7 @@ const Header = () => {
   const location = useLocation();
 
   const token = localStorage.getItem("token");
+  const name = localStorage.getItem("fullName");
 
   return (
     <header className="fixed inset-x-0 top-0 h-[100px] z-50">
@@ -63,7 +64,7 @@ const Header = () => {
               className="h-[54px] w-[54px] rounded-full border-2 border-white"
             />
             <span className="ml-2 font-medium text-gray-900">
-              Welcome Ahmed
+              Welcome {name}
             </span>
           </Link>
         )}
