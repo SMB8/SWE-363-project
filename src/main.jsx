@@ -11,6 +11,13 @@ import EventsPage from "./events/eventsPage.jsx";
 import HomePage from "./home/home-page.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
+//routes 
+// root (checked)
+// sign-in (checked)
+// sign-up
+// events
+// profile
+//manage events
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Router>

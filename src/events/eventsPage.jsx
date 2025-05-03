@@ -3,7 +3,7 @@ import axios from "axios";
 import calendarIcon from "../assets/calender.png";
 import recommendationsIcon from "../assets/time.png";
 import totalIcon from "../assets/users.png";
-
+import axiosInstance from "../api/axios";
 export default function EventsPage() {
   const [user, setUser] = useState(null);
   const [view, setView] = useState("recommended");
@@ -18,7 +18,7 @@ export default function EventsPage() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get("/auth/profile");
+        const { data } = await axiosInstance.get("/auth/profile");
         setUser(data);
       } catch (err) {
         console.error("Failed to load user profile:", err);
@@ -32,14 +32,14 @@ export default function EventsPage() {
       try {
         let res;
         if (view === "recommended") {
-          res = await axios.get("/events");
+          res = await axiosInstance.get("/events");
           setSummary({
             joined: 0,
             recommendations: res.data.length,
             total: res.data.length,
           });
         } else {
-          res = await axios.get("/events/enrolled");
+          res = await axiosInstance.get("/events/enrolled");
           setSummary({
             joined: res.data.length,
             recommendations: 0,

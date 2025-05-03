@@ -1,12 +1,12 @@
 // src/pages/Profile.jsx
 import React, { useState } from "react";
 
+import axiosInstance from "../api/axios"
+
 const initialProfile = {
-  name: "Ahmed Qahtani",
-  email: "Ahmad@gmail.com",
-  password: "123@abc",
-  studentId: "202155989",
-  major: "Software Engineering",
+  name: localStorage.getItem("fullName") || "No Name",
+  email: localStorage.getItem("email") || "No Email",
+  studentId: localStorage.getItem("studentId") || "No Student ID",
   interests: ["Technical", "Chess", "Technical"],
 };
 
@@ -40,6 +40,32 @@ const Profile = () => {
       interests: prev.interests.filter((_, i) => i !== idx),
     }));
   };
+
+  const handleUpdateProfile = async () => {
+    try {
+      // Assuming axiosInstance is imported, e.g., import axiosInstance from '../api/axiosInstance';
+      // Adjust the endpoint '/api/profile' if necessary
+      const res = await axiosInstance.put('/profile/update', profile);
+      console.log(res);
+      console.log(res.data)
+
+      if (res.status === 200) {
+        // Update local storage with new profile data
+        localStorage.setItem("fullName", res.data.fullName);
+        localStorage.setItem("email", res.data.email);
+        localStorage.setItem("studentId", res.data.studentId);
+        localStorage.setItem("interests", JSON.stringify(res.data.interests));
+        alert("Profile updated successfully");
+      } else {
+        alert("Error, try again");
+      }
+
+
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+    
+  }
 
   return (
     <div
@@ -230,22 +256,6 @@ const Profile = () => {
               />
             </div>
             <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 14, fontWeight: 500 }}>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={profile.password}
-                onChange={handleProfileChange}
-                style={{
-                  width: "100%",
-                  padding: "7px 10px",
-                  borderRadius: 6,
-                  border: "1px solid #d0d7e2",
-                  marginTop: 4,
-                }}
-              />
-            </div>
-            <div style={{ marginBottom: 14 }}>
               <label style={{ fontSize: 14, fontWeight: 500 }}>
                 Student ID
               </label>
@@ -263,23 +273,9 @@ const Profile = () => {
                 }}
               />
             </div>
-            <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 14, fontWeight: 500 }}>Major</label>
-              <input
-                type="text"
-                name="major"
-                value={profile.major}
-                onChange={handleProfileChange}
-                style={{
-                  width: "100%",
-                  padding: "7px 10px",
-                  borderRadius: 6,
-                  border: "1px solid #d0d7e2",
-                  marginTop: 4,
-                }}
-              />
-            </div>
+
             <button
+            onClick={handleUpdateProfile}
               type="submit"
               style={{
                 marginTop: 18,

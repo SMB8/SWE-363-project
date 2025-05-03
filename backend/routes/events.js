@@ -1,6 +1,7 @@
 import express from "express";
 import Event from "../models/Event.js";
 import jwt from "jsonwebtoken";
+import process from "node:process";
 const router = express.Router();
 
 // reuse this to decode `req.userId`

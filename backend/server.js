@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import process from "node:process";
 import authRoutes from "./routes/auth.js";
 import eventsRoutes from "./routes/events.js";
+import profileRoutes from "./routes/profile.js"; // Import profile routes
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,8 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventsRoutes);
+app.use("/api/profile", profileRoutes);
+
 //todo, middleware so all routes are protected and no access to the api without a token
 
 // Start the server
