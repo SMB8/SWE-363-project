@@ -9,6 +9,7 @@ import Signup from "./pages/Signup.jsx";
 import MangeEvent from "./pages/ManageEvent.jsx";
 import EventsPage from "./events/eventsPage.jsx";
 import HomePage from "./home/home-page.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -18,12 +19,31 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/sign-in" element={<Signin />} />
-        <Route path="/sign-up" element={<Signup />} />
 
-
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/events" element={<EventsPage />} />
-        <Route path="/manage" element={<MangeEvent />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events"
+          element={
+            <ProtectedRoute>
+              <EventsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage"
+          element={
+            <ProtectedRoute>
+              <MangeEvent />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   </StrictMode>

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
     const [formData, setFormData] = useState({ email: "", password: "" });
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -12,9 +14,8 @@ const Signin = () => {
         e.preventDefault();
         try {
             const res = await axios.post("http://localhost:54321/api/auth/signin", formData);
-            alert(res.data.message);
-            // Save token or redirect if needed
-            // localStorage.setItem("token", res.data.token);
+            localStorage.setItem("token", res.data.token);
+            navigate("/"); // Redirect to home page after successful login
         } catch (err) {
             alert(err.response?.data?.message || "Sign in failed");
         }
