@@ -26,8 +26,7 @@ const userSchema = new mongoose.Schema({
         enum: ['student', 'staff'],
     },
     interests: {
-        type: [String], // Array of strings for interests
-        default: [],
+        type: Object,
     },
 });
 

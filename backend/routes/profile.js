@@ -28,7 +28,7 @@ router.put('/update', protect, async (req, res) => {
         }
         console.log('User found:', req.body);
 
-        const { name, email, studentId, interests } = req.body;
+        const { name, email, studentId, interestRatings } = req.body;
 
         if (email && email !== user.email) {
             const emailExists = await User.findOne({ email });
@@ -47,7 +47,7 @@ router.put('/update', protect, async (req, res) => {
 
         user.fullName = name || user.fullName;
 
-        user.interests = Array.isArray(interests) ? interests : user.interests;
+        user.interests = interestRatings || user.interests;
 
         const updatedUser = await user.save();
 
