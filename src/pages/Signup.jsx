@@ -8,7 +8,7 @@ const Signup = () => {
         studentId: "",
         password: "",
         confirmPassword: "",
-        accountType: "Student",
+        accountType: "student",
     });
 
     const handleChange = (e) => {
@@ -114,8 +114,8 @@ const Signup = () => {
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300 outline-none"
                         >
-                            <option>Student</option>
-                            <option>Staff</option>
+                            <option>student</option>
+                            <option>staff</option>
                         </select>
                     </div>
 
