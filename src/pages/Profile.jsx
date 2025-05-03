@@ -1,50 +1,76 @@
 // src/pages/Profile.jsx
 import React, { useState } from "react";
 
+import axiosInstance from "../api/axios"
+
 const initialProfile = {
-  name: "Ahmed Qahtani",
-  email: "Ahmad@gmail.com",
-  password: "123@abc",
-  studentId: "202155989",
-  major: "Software Engineering",
-  interests: ["Technical", "Chess", "Technical"],
+  name: localStorage.getItem("fullName") || "No Name",
+  email: localStorage.getItem("email") || "No Email",
+  studentId: localStorage.getItem("studentId") || "No Student ID",
 };
 
-const initialPreferences = {
-  notifications: true,
-  emailNotifications: false,
-  eventReminder: true,
-  connectionRequest: true,
-  showDeletedEvents: false,
-  autoDeleteFinishedEvents: true,
+const storageJson = localStorage.getItem("interestRatings");
+const parsedInterestRatings = storageJson ? JSON.parse(storageJson) : null;
+console.log("Parsed Interest Ratings:", parsedInterestRatings);
+const initialInterestRatings = {
+  social: parsedInterestRatings.social, // e.g., Enjoys social gatherings, parties
+  outdoorsy: parsedInterestRatings.outdoorsy, // e.g., Likes hiking, nature, sports
+  creative: parsedInterestRatings.creative, // e.g., Into arts, music, writing
+  intellectual: parsedInterestRatings.intellectual, // e.g., Enjoys learning, reading, discussions
+  relaxed: parsedInterestRatings.relaxed, // e.g., Prefers calm activities, staying in
 };
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [profile, setProfile] = useState(initialProfile);
-  const [preferences, setPreferences] = useState(initialPreferences);
+  const [interestRatings, setInterestRatings] = useState(initialInterestRatings);
 
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePreferencesChange = (e) => {
-    const { name, checked } = e.target;
-    setPreferences((prev) => ({ ...prev, [name]: checked }));
+  const handleInterestRatingChange = (e) => {
+    const { name, value } = e.target;
+    const rating = Math.max(1, Math.min(5, Number(value)));
+    setInterestRatings((prev) => ({ ...prev, [name]: rating }));
   };
 
-  const handleInterestRemove = (idx) => {
-    setProfile((prev) => ({
-      ...prev,
-      interests: prev.interests.filter((_, i) => i !== idx),
-    }));
-  };
+
+  const handleUpdateProfile = async () => {
+    try {
+      // Adjust the endpoint '/api/profile' if necessary
+      // Include interestRatings in the payload if the backend supports it
+      const payload = { ...profile, interestRatings  };
+      const res = await axiosInstance.put('/profile/update', payload);
+      console.log(res);
+      console.log(res.data)
+
+      if (res.status === 200) {
+        // Update local storage with new profile data
+        localStorage.setItem("fullName", res.data.fullName);
+        localStorage.setItem("email", res.data.email);
+        localStorage.setItem("studentId", res.data.studentId);
+        localStorage.setItem("interestRatings", JSON.stringify(interestRatings));
+
+        alert("Profile updated successfully");
+      } else {
+        alert("Error, try again");
+      }
+
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Error updating profile. See console for details."); // Provide more feedback
+    }
+    
+  }
+
+
 
   return (
     <div
       style={{
-
+        // ...existing styles...
         marginTop: 100,
         maxWidth: 900,
         margin: "40px auto",
@@ -59,6 +85,7 @@ const Profile = () => {
      
       <div
         style={{
+          // ...existing styles...
           width: 240,
           background: "#fff",
           borderRadius: 12,
@@ -69,51 +96,10 @@ const Profile = () => {
           boxShadow: "0 1px 4px #0001",
         }}
       >
-        <div style={{ marginTop: 16, textAlign: "center" }}>
-          <div style={{ fontWeight: 600, fontSize: 18 }}>
-            Welcome Ahmed
-          </div>
-          <div style={{ fontSize: 13, color: "#888", marginBottom: 12 }}>
-            Software Engineering Student
-          </div>
-          <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 6 }}>
-            Interests
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-            {profile.interests.map((interest, idx) => (
-              <span
-                key={idx}
-                style={{
-                  background: "#e6ecf5",
-                  borderRadius: 8,
-                  padding: "2px 10px",
-                  fontSize: 12,
-                  marginBottom: 4,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                }}
-              >
-                {interest}
-                <button
-                  onClick={() => handleInterestRemove(idx)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: "#888",
-                    cursor: "pointer",
-                    fontSize: 12,
-                  }}
-                  title="Remove"
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
+      
         <button
           style={{
+            // ...existing styles...
             marginTop: "auto",
             background: "#f77",
             color: "#fff",
@@ -126,6 +112,11 @@ const Profile = () => {
           }}
           onClick={() => {
             localStorage.removeItem("token");
+            // Clear other relevant local storage items on logout
+            localStorage.removeItem("fullName");
+            localStorage.removeItem("email");
+            localStorage.removeItem("studentId");
+            // localStorage.removeItem("interestRatings"); 
             window.location.href = "/sign-in";
           }}
 
@@ -137,6 +128,7 @@ const Profile = () => {
       {/* Right Panel */}
       <div
         style={{
+          // ...existing styles...
           flex: 1,
           background: "#fff",
           borderRadius: 12,
@@ -150,6 +142,7 @@ const Profile = () => {
           <button
             onClick={() => setActiveTab("profile")}
             style={{
+              // ...existing styles...
               flex: 1,
               background: activeTab === "profile" ? "#e6ecf5" : "#f7faff",
               border: "none",
@@ -162,11 +155,13 @@ const Profile = () => {
           >
             Profile
           </button>
+          {/* Updated Tab Button */}
           <button
-            onClick={() => setActiveTab("preferences")}
+            onClick={() => setActiveTab("interests")}
             style={{
+              // ...existing styles...
               flex: 1,
-              background: activeTab === "preferences" ? "#e6ecf5" : "#f7faff",
+              background: activeTab === "interests" ? "#e6ecf5" : "#f7faff", // Changed activeTab check
               border: "none",
               borderRadius: 8,
               padding: "8px 0",
@@ -175,7 +170,7 @@ const Profile = () => {
               cursor: "pointer",
             }}
           >
-            Preferences
+            Interests {/* Changed text */}
           </button>
         </div>
 
@@ -185,7 +180,8 @@ const Profile = () => {
             style={{ maxWidth: 400, margin: "0 auto" }}
             onSubmit={(e) => e.preventDefault()}
           >
-            <div style={{ fontWeight: 600, fontSize: 17, marginBottom: 8 }}>
+            {/* ... existing profile form fields ... */}
+             <div style={{ fontWeight: 600, fontSize: 17, marginBottom: 8 }}>
               Personal Information
             </div>
             <div
@@ -201,7 +197,7 @@ const Profile = () => {
               <label style={{ fontSize: 14, fontWeight: 500 }}>Name</label>
               <input
                 type="text"
-                name="name"
+                name="name" // Changed from fullName to name to match state
                 value={profile.name}
                 onChange={handleProfileChange}
                 style={{
@@ -230,22 +226,6 @@ const Profile = () => {
               />
             </div>
             <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 14, fontWeight: 500 }}>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={profile.password}
-                onChange={handleProfileChange}
-                style={{
-                  width: "100%",
-                  padding: "7px 10px",
-                  borderRadius: 6,
-                  border: "1px solid #d0d7e2",
-                  marginTop: 4,
-                }}
-              />
-            </div>
-            <div style={{ marginBottom: 14 }}>
               <label style={{ fontSize: 14, fontWeight: 500 }}>
                 Student ID
               </label>
@@ -263,25 +243,12 @@ const Profile = () => {
                 }}
               />
             </div>
-            <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 14, fontWeight: 500 }}>Major</label>
-              <input
-                type="text"
-                name="major"
-                value={profile.major}
-                onChange={handleProfileChange}
-                style={{
-                  width: "100%",
-                  padding: "7px 10px",
-                  borderRadius: 6,
-                  border: "1px solid #d0d7e2",
-                  marginTop: 4,
-                }}
-              />
-            </div>
+
             <button
+            onClick={handleUpdateProfile} // Keep using handleUpdateProfile for personal info
               type="submit"
               style={{
+                // ...existing styles...
                 marginTop: 18,
                 background: "#174c7f",
                 color: "#fff",
@@ -294,16 +261,17 @@ const Profile = () => {
                 width: "100%",
               }}
             >
-              Save Changes
+              Save Profile Changes
             </button>
           </form>
         ) : (
+          // New Interests Form
           <form
             style={{ maxWidth: 500, margin: "0 auto" }}
             onSubmit={(e) => e.preventDefault()}
           >
             <div style={{ fontWeight: 600, fontSize: 17, marginBottom: 8 }}>
-              Notification & Privacy Settings
+              Personality & Interests Rating
             </div>
             <div
               style={{
@@ -312,7 +280,7 @@ const Profile = () => {
                 marginBottom: 18,
               }}
             >
-              Manage your personal information and preferences
+              Rate the following aspects from 1 (Not at all) to 5 (Very much).
             </div>
             <div
               style={{
@@ -322,66 +290,43 @@ const Profile = () => {
                 marginBottom: 24,
               }}
             >
-              <label style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <input
-                  type="checkbox"
-                  name="notifications"
-                  checked={preferences.notifications}
-                  onChange={handlePreferencesChange}
-                />
-                Notifications
-                <span style={{ marginLeft: 24, fontSize: 13, color: "#555" }}>
-                  Show Deleted Events
-                </span>
-                <input
-                  type="checkbox"
-                  name="showDeletedEvents"
-                  checked={preferences.showDeletedEvents}
-                  onChange={handlePreferencesChange}
-                  style={{ marginLeft: 8 }}
-                />
-              </label>
-              <label style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <input
-                  type="checkbox"
-                  name="emailNotifications"
-                  checked={preferences.emailNotifications}
-                  onChange={handlePreferencesChange}
-                />
-                Email Notifications
-                <span style={{ marginLeft: 24, fontSize: 13, color: "#555" }}>
-                  Auto Delete Finished Events
-                </span>
-                <input
-                  type="checkbox"
-                  name="autoDeleteFinishedEvents"
-                  checked={preferences.autoDeleteFinishedEvents}
-                  onChange={handlePreferencesChange}
-                  style={{ marginLeft: 8 }}
-                />
-              </label>
-              <label style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <input
-                  type="checkbox"
-                  name="eventReminder"
-                  checked={preferences.eventReminder}
-                  onChange={handlePreferencesChange}
-                />
-                Event Reminder
-              </label>
-              <label style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <input
-                  type="checkbox"
-                  name="connectionRequest"
-                  checked={preferences.connectionRequest}
-                  onChange={handlePreferencesChange}
-                />
-                Connection Request
-              </label>
+              {/* Map through the interest ratings state */}
+              {Object.entries(interestRatings).map(([key, value]) => (
+                <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <label style={{ textTransform: 'capitalize', fontWeight: 500 }}>
+                    {key}:
+                  </label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span>1</span>
+                    <input
+                      type="range" // Using range slider for better UX
+                      name={key}
+                      value={value}
+                      onChange={handleInterestRatingChange}
+                      min="1"
+                      max="5"
+                      step="1"
+                      style={{ flexGrow: 1, cursor: 'pointer' }}
+                    />
+                     <span>5</span>
+                     <input
+                      type="number" // Number input for precise value setting/display
+                      name={key}
+                      value={value}
+                      onChange={handleInterestRatingChange}
+                      min="1"
+                      max="5"
+                      style={{ width: '50px', textAlign: 'center', marginLeft: '10px' }}
+                     />
+                  </div>
+                </div>
+              ))}
             </div>
             <button
-              type="submit"
+              onClick={handleUpdateProfile} // Use a dedicated handler for interests
+              type="button" // Changed type to button to prevent form submission if needed elsewhere
               style={{
+                // ...existing styles...
                 background: "#174c7f",
                 color: "#fff",
                 border: "none",
@@ -393,7 +338,7 @@ const Profile = () => {
                 width: "100%",
               }}
             >
-              Save Changes
+              Save Interest Ratings
             </button>
           </form>
         )}

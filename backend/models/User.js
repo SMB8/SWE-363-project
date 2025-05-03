@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         enum: ['student', 'staff'],
     },
+    interests: {
+        type: Object,
+    },
 });
 
 // Hash the password before saving the user to the database
