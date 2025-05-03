@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.js";
 import eventsRoutes from "./routes/events.js";
+import process from "node:process";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ mongoose
   })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
+
 
 // Mount routers
 app.use("/api/auth", authRoutes);
