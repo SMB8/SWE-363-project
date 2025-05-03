@@ -13,11 +13,11 @@ const storageJson = localStorage.getItem("interestRatings");
 const parsedInterestRatings = storageJson ? JSON.parse(storageJson) : null;
 console.log("Parsed Interest Ratings:", parsedInterestRatings);
 const initialInterestRatings = {
-  social: parsedInterestRatings.social, // e.g., Enjoys social gatherings, parties
-  outdoorsy: parsedInterestRatings.outdoorsy, // e.g., Likes hiking, nature, sports
-  creative: parsedInterestRatings.creative, // e.g., Into arts, music, writing
-  intellectual: parsedInterestRatings.intellectual, // e.g., Enjoys learning, reading, discussions
-  relaxed: parsedInterestRatings.relaxed, // e.g., Prefers calm activities, staying in
+  social: parsedInterestRatings?.social ?? 3, // Default to 3 if not found
+  outdoorsy: parsedInterestRatings?.outdoorsy ?? 3,
+  creative: parsedInterestRatings?.creative ?? 3,
+  intellectual: parsedInterestRatings?.intellectual ?? 3,
+  relaxed: parsedInterestRatings?.relaxed ?? 3,
 };
 
 const Profile = () => {
