@@ -14,6 +14,7 @@ const Signin = () => {
         e.preventDefault();
         try {
             const res = await axios.post("http://localhost:54321/api/auth/signin", formData);
+            console.log(res.data);
             localStorage.setItem("token", res.data.token);
             navigate("/"); // Redirect to home page after successful login
         } catch (err) {

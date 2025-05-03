@@ -124,6 +124,11 @@ const Profile = () => {
             fontSize: 15,
             cursor: "pointer",
           }}
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.href = "/sign-in";
+          }}
+
         >
           Log out
         </button>

@@ -7,14 +7,15 @@ const Header = () => {
   const tabs = [
     { name: "Home", path: "/" },
     { name: "Events", path: "/events" },
-    { name: "Profile", path: "/profile" }
+    { name: "Profile", path: "/profile" },
   ];
   const location = useLocation();
+
+  const token = localStorage.getItem("token");
 
   return (
     <header className="fixed inset-x-0 top-0 h-[100px] z-50">
       <div className="mx-auto max-w-7xl h-full grid grid-cols-3 items-center px-4">
-
         <div className="flex items-center h-full justify-self-start">
           <img
             src={KConnect}
@@ -26,7 +27,8 @@ const Header = () => {
         <nav className="justify-self-center">
           <ul className="flex h-[46px] items-center bg-white bg-opacity-90 rounded-full px-2">
             {tabs.map((tab) => {
-              const isActive = location.pathname === tab.path || 
+              const isActive =
+                location.pathname === tab.path ||
                 (location.pathname === "" && tab.path === "/");
               return (
                 <li key={tab.name} className="mx-1">
@@ -50,14 +52,21 @@ const Header = () => {
           </ul>
         </nav>
 
-        <Link to="/manage" className="flex items-center h-full justify-self-end pr-4">
-          <img
-            src={avatar}
-            alt="User Avatar"
-            className="h-[54px] w-[54px] rounded-full border-2 border-white"
-          />
-          <span className="ml-2 font-medium text-gray-900">Welcome Ahmed</span>
-        </Link>
+        {token && (
+          <Link
+            to="/manage"
+            className="flex items-center h-full justify-self-end pr-4"
+          >
+            <img
+              src={avatar}
+              alt="User Avatar"
+              className="h-[54px] w-[54px] rounded-full border-2 border-white"
+            />
+            <span className="ml-2 font-medium text-gray-900">
+              Welcome Ahmed
+            </span>
+          </Link>
+        )}
       </div>
     </header>
   );
