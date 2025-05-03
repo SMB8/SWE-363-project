@@ -11,7 +11,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
-
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected successfully'))
@@ -19,10 +22,11 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 app.use('/api/auth', authRoutes);
+//todo, middleware so all routes are protected and no access to the api without a token
 
 
 // Start the server
-const PORT = process.env.PORT || 5000;
+const PORT = 54321;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

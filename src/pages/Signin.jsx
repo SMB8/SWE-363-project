@@ -11,7 +11,7 @@ const Signin = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/signin", formData);
+            const res = await axios.post("http://localhost:54321/api/auth/signin", formData);
             alert(res.data.message);
             // Save token or redirect if needed
             // localStorage.setItem("token", res.data.token);

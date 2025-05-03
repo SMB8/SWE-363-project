@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const Main = () => {
   return (
     <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between px-8 lg:px-50 py-12 lg:py-80">
-      {/* Left panel */}
       <div className="max-w-lg space-y-6">
         <h1
           className="
@@ -30,36 +29,43 @@ const Main = () => {
           </p>
         </div>
         <div className="flex space-x-4">
-          <Link to={"/sign-in"} className="bg-blue-900 hover:bg-blue-800 px-6 py-3 rounded-full font-medium transition">
+          <Link
+            to={"/sign-in"}
+            className="bg-blue-900 hover:bg-blue-800 px-6 py-3 rounded-full font-medium transition"
+          >
             Sign in now
           </Link>
-          <Link to={"/sign-up"} className="bg-white bg-opacity-75 hover:bg-opacity-100 text-blue-900 px-6 py-3 rounded-full font-medium transition">
+          <Link
+            to={"/sign-up"}
+            className="bg-white bg-opacity-75 hover:bg-opacity-100 text-blue-900 px-6 py-3 rounded-full font-medium transition"
+          >
             Sign up now
           </Link>
         </div>
       </div>
 
-      <div className="relative mt-12 lg:mt-0">
+      <div className=" mt-12 lg:mt-0">
         <img
           src={blob}
-          alt=""
-          aria-hidden="true"
+          alt="Decorative background blob" // Added descriptive alt text
+          aria-hidden="true" // Still decorative
           className="
-          absolute 
-          -top-10      
-          -left-8       
-          w-[150%]      
-          scale-[1.5]        
-          h-auto 
-          object-contain
-        "
+              w-full         /* Full width when stacked */
+              sm:w-1/3     /* 1/3 width when side-by-side */
+              h-auto         /* Maintain aspect ratio */
+              object-contain /* Fit image within bounds */
+            "
         />
 
-        {/* Foreground illustration */}
         <img
           src={pic}
           alt="Networking Illustration"
-          className="relative z-10 w-full h-auto"
+          className="
+              w-full         /* Full width when stacked */
+              sm:w-2/3     /* 2/3 width when side-by-side */
+              h-auto         /* Maintain aspect ratio */
+              object-contain /* Fit image within bounds */
+            "
         />
       </div>
     </div>

@@ -17,9 +17,11 @@ createRoot(document.getElementById("root")).render(
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<Signup />} />
+
+
+        <Route path="/profile" element={<Profile />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/manage" element={<MangeEvent />} />
       </Routes>
