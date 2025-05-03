@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:54321/api';
+const baseURL = 'https://363api.genio.engineer/api';
 
 const axiosInstance = axios.create({
     baseURL: baseURL,

@@ -23,7 +23,7 @@ const Signup = () => {
         }
 
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/signup", {
+            const res = await axios.post("https://363api.genio.engineer/api/auth/signup", {
                 fullName: formData.fullName,
                 email: formData.email,
                 studentId: formData.studentId,

@@ -14,7 +14,7 @@ const Signin = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:54321/api/auth/signin",
+        "https://363api.genio.engineer/api/auth/signin",
         formData
       );
       console.log(res.data);
