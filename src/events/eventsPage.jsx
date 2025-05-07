@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import calendarIcon from "../assets/calender.png";
 import recommendationsIcon from "../assets/time.png";
 import totalIcon from "../assets/users.png";
 import axiosInstance from "../api/axios";
+//get name from local storage
+const name = localStorage.getItem("fullName");
+
 export default function EventsPage() {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [view, setView] = useState("recommended");
   const [events, setEvents] = useState([]);
   const [summary, setSummary] = useState({
@@ -15,16 +17,16 @@ export default function EventsPage() {
   });
 
   // Load current user profile
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await axiosInstance.get("/auth/profile");
-        setUser(data);
-      } catch (err) {
-        console.error("Failed to load user profile:", err);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const { data } = await axiosInstance.get("/auth/profile");
+  //       setUser(data);
+  //     } catch (err) {
+  //       console.error("Failed to load user profile:", err);
+  //     }
+  //   })();
+  // }, []);
 
   // Load events whenever `view` changes
   useEffect(() => {
@@ -56,10 +58,10 @@ export default function EventsPage() {
   // Toggle enrollment for an event
   const handleToggle = async (id) => {
     try {
-      await axios.post(`/events/${id}/enroll`);
+      await axiosInstance.post(`/events/${id}/enroll`);
       // re-fetch current view
       const endpoint = view === "recommended" ? "/events" : "/events/enrolled";
-      const res = await axios.get(endpoint);
+      const res = await axiosInstance.get(endpoint);
       setEvents(res.data);
     } catch (err) {
       console.error("Failed to toggle enrollment:", err);
@@ -72,16 +74,16 @@ export default function EventsPage() {
       <div className="bg-blue-600 text-white rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">
-            Hello {user ? user.fullName : "Student"}!
+            Hello {name ? name : "Student"}!
           </h2>
           <p className="mt-1 text-sm opacity-90">
             Discover events that match your interests and connect with fellow
             KFUPM students.
           </p>
         </div>
-        <button className="mt-4 md:mt-0 bg-white text-blue-600 font-medium px-4 py-2 rounded-lg hover:bg-opacity-90 transition">
+        {/* <button className="mt-4 md:mt-0 bg-white text-blue-600 font-medium px-4 py-2 rounded-lg hover:bg-opacity-90 transition">
           Manage My Events
-        </button>
+        </button> */}
       </div>
 
       {/* Summary Cards */}

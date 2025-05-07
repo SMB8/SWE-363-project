@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { baseURL } from "../api/axios";
 const Signup = () => {
     const [formData, setFormData] = useState({
         fullName: "",
@@ -23,7 +23,7 @@ const Signup = () => {
         }
 
         try {
-            const res = await axios.post("https://363api.genio.engineer/api/auth/signup", {
+            const res = await axios.post(baseURL+"/auth/signup", {
                 fullName: formData.fullName,
                 email: formData.email,
                 studentId: formData.studentId,
